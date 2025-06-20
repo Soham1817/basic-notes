@@ -38,7 +38,7 @@ function list_notes() {
                 <h3 class="text-md"> ${note[0]} </h3>
                 <button onclick = "event.stopPropagation(); delete_node(${index})" class="hover:opacity-70"> 🗑️ </button>
             </div>
-                <p class="text-xs mt-3"> ${note[1].length > 150 ? note[1].slice(0, 150) + "..." : note[1]} </p>
+                <p class="text-xs break-words whitespace-normal mt-3"> ${note[1].length > 150 ? note[1].slice(0, 150) + "..." : note[1]} </p>
 
         `
         note_preview.addEventListener('click', () => edit_note(index));
