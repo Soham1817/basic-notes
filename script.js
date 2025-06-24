@@ -1,5 +1,7 @@
+// Retrieve notes from localStorage or initialize as an empty array
 let notes = JSON.parse(localStorage.getItem('notes')) || [];
 
+// Function to display input fields for adding new note
 function add_note() {
   const new_note = document.getElementById('add_new_note');
   new_note.innerHTML = `
@@ -9,6 +11,7 @@ function add_note() {
   `;
 }
 
+// Function to edit an existing note by loading it into input fields
 function edit_note(index) {
     let note = notes[index];
     const note_preview = document.getElementById('add_new_note');
@@ -19,14 +22,18 @@ function edit_note(index) {
   `;
 }
 
+// Function to delete a note at the given index
 function delete_node(index) {
     notes.splice(index, 1);
     update_notes();
 }
 
+// Function to display all notes in the preview section
 function list_notes() {
+    const all_notes_preview = document.getElementById('all_notes_preview');
+
+    // If no notes exist, show placeholder message
     if (notes.length === 0) {
-        all_notes_preview = document.getElementById('all_notes_preview');
         all_notes_preview.innerHTML = '<p class="m-6 text-sm">No notes yet. Click "Add Note" to get started!</p>';
     }
 
@@ -42,37 +49,43 @@ function list_notes() {
 
         `
         note_preview.addEventListener('click', () => edit_note(index));
-
-        const all_notes_preview = document.getElementById('all_notes_preview');
         all_notes_preview.appendChild(note_preview);
     })
 }
 
+// Function to save a new note or update an existing one
 function save_note(index = null) {
   const newTitle = document.getElementById('new_title').value.trim();
   const newBody = document.getElementById('new_body').value.trim();
 
+  // Only save if either field is non-empty
   if (newTitle || newBody) {
     if(index == null) {
+        // New note
         notes.unshift([newTitle, newBody]);
         update_notes();
     } else {
+        // Editing existing note
         notes[index] = [newTitle, newBody];
         update_notes();
     }
   }
 }
 
+// Function to update localStorage and refresh the UI
 function update_notes() {
     localStorage.setItem('notes', JSON.stringify(notes));
     console.log(notes);
 
+    // Clear the input and preview sections
     document.getElementById('add_new_note').innerHTML = '';
     document.getElementById('all_notes_preview').innerHTML = '';
     
+    // Re-render all notes
     list_notes();
 }
 
+// Load and display notes when page is opened
 window.onload = () => {
   list_notes();
 };
